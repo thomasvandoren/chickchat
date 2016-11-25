@@ -1,0 +1,38 @@
+{
+  "name": "chickchat",
+  "version": "1.0.0",
+  "description": "ChickTech Chat Webapp.",
+  "main": "index.js",
+  "repository": "git@github.com:rafastealth/chickchat.git",
+  "author": "Chris Emery <emerysoft@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "console": "babel-node",
+    "start": "babel-node bin/server"
+  },
+  "dependencies": {
+    "auth0-lock": "^10.7.0",
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.18.2",
+    "babel-loader": "^6.2.8",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "babel-preset-stage-1": "^6.16.0",
+    "css-loader": "^0.26.0",
+    "exports-loader": "^0.6.3",
+    "lodash": "^4.17.2",
+    "material-ui": "^0.16.4",
+    "node-env-file": "^0.1.8",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
+    "react-redux": "^4.4.6",
+    "react-router-redux": "^4.0.7",
+    "react-tap-event-plugin": "^2.0.1",
+    "redux": "^3.6.0",
+    "redux-thunk": "^2.1.0",
+    "updeep": "^1.0.0",
+    "webpack": "^1.13.3",
+    "webpack-dev-middleware": "^1.8.4",
+    "webpack-hot-middleware": "^2.13.2"
+  }
+}

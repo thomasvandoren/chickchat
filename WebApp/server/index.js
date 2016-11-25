@@ -12,12 +12,14 @@ app.use(historyApiFallback({
     verbose: false
 }));
 
-const webpackConfig = require('./webpack.config');
+const webpackConfig = require('../config/webpack.config');
 const compiler = webpack(webpackConfig);
 
 const {publicPath} = webpackConfig.output;
 
-app.use(require('./middleware/webpack-dev')(compiler, publicPath));
+
+const webpackDev = require('./middleware/webpack-dev')
+app.use(webpackDev(compiler, publicPath));
 if (__HMR__) {
     app.use(require('./middleware/webpack-hmr')(compiler))
 }

@@ -1,9 +1,6 @@
 /* eslint key-spacing:0 spaced-comment:0 */
 import path from "path"
 import {argv} from "yargs"
-import env from "node-env-file"
-
-env('../env')
 
 const config = {
     env: process.env.NODE_ENV || 'development',
@@ -61,7 +58,7 @@ const config = {
 config.globals = {
     'process.env': {
         'NODE_ENV': JSON.stringify(config.env),
-        'API_URL': JSON.stringify(process.env.API_URL)
+        'API_URL': JSON.stringify('https://chick.chat')
     },
     '__DEV__': config.env === 'development',
     '__HMR__': config.env === 'development' && argv.hmr !== false

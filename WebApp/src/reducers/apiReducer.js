@@ -36,21 +36,9 @@ import config from "src/config"
 const initialState = {
     url: config.apiUrl,
     endpoints: {
-        booksGET: {
+        chatGET: {
             method: 'get',
             url: `${config.apiUrl}/book`
-        },
-        booksPOST: {
-            method: 'post',
-            url: `${config.apiUrl}/book`
-        },
-        voteGET: {
-            method: 'get',
-            url: `${config.apiUrl}/vote`
-        },
-        votePUT: {
-            method: 'put',
-            url: `${config.apiUrl}/vote`
         }
     }
 };

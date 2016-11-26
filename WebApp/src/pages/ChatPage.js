@@ -1,5 +1,6 @@
 import React, {PropTypes} from "react"
 import {connect} from "react-redux"
+import Fetch from "../components/Fetch"
 
 export class ChatPage extends React.Component {
     componentWillMount() {
@@ -8,7 +9,10 @@ export class ChatPage extends React.Component {
 
     render() {
         return (
-            <h1>Hello World</h1>
+            <div>
+                <h1>Hello World</h1>
+                <Fetch />
+            </div>
         )
     }
 }

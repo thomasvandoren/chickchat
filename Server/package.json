@@ -25,6 +25,7 @@
     "body-parser": "^1.15.2",
     "cors": "^2.8.1",
     "express": "^4.14.0",
+    "express-jwt": "^5.1.0",
     "json-loader": "^0.5.4",
     "jsrsasign": "^6.1.4",
     "lodash": "4.16.4",

@@ -9,8 +9,9 @@ export default class AuthService {
                 redirectUrl: window.location.origin + '/login',
                 responseType: 'token',
                 params: {
-                    state: JSON.stringify({pathname: window.location.pathname})
-                }
+                    state: JSON.stringify({pathname: window.location.pathname}),
+                    scope: 'openid name picture'
+                },
             }
         })
         // Add callback for lock `authenticated` event

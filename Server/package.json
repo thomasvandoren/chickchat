@@ -7,6 +7,9 @@
   "author": "Thomas Van Doren <thomas.vandoren@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "build": "webpack",
+    "deploy": "./scripts/deploy.bash",
+    "package": "npm run build && zip -j api_backend.zip dist/*.js",
     "start": "babel-node local-server.js"
   },
   "dependencies": {

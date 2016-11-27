@@ -1,0 +1,25 @@
+{
+  "parser": "babel-eslint",
+
+  "extends": [
+    "standard",
+    "standard-react"
+  ],
+
+  "env": {
+    "browser": true,
+    "node": true
+  },
+
+  "globals": {
+    "__TEST__": false,
+    "__DEV__": false,
+    "__PROD__": false,
+    "__HMR__": false
+  },
+
+  "rules": {
+    "react/prop-types": [2, { "ignore": ["children"] }],
+    "react/jsx-no-bind": 2
+  }
+}

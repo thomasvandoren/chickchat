@@ -14,7 +14,7 @@ export function getAuth0Secret() {
             if (err) {
                 reject(err);
             } else {
-                resolve(data)
+                resolve(data.Plaintext.toString())
             }
         })
     });

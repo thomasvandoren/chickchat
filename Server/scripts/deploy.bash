@@ -55,6 +55,12 @@ S3_ARTIFACT=s3://${S3_BUCKET}/${ARTIFACT_NAME}
 $AWS s3 cp ${ARTIFACT} ${S3_ARTIFACT}
 log_info "Uploaded ${ARTIFACT_NAME} to ${S3_ARTIFACT}"
 
+SWAGGER_NAME=swagger.yaml
+SWAGGER=${REPO_ROOT}/${SWAGGER_NAME}
+S3_SWAGGER=s3://${S3_BUCKET}/${SWAGGER_NAME}
+$AWS s3 cp ${SWAGGER} ${S3_SWAGGER}
+log_info "Uploaded ${SWAGGER_NAME} to ${S3_SWAGGER}"
+
 STACK_NAME=chickchat-api
 log_info "Packaging cloud formation..."
 $AWS cloudformation package \
@@ -66,5 +72,12 @@ log_info "Deploying cloudformation stack: ${STACK_FORMATION}"
 $AWS cloudformation deploy \
   --template-file rendered-aws-sam.yaml \
   --capabilities CAPABILITY_IAM \
-  --stack-name ${STACK_NAME}
+  --stack-name ${STACK_NAME} \
+  || true
 log_info "Deployed cloudformation stack: ${STACK_FORMATION}"
+
+$AWS lambda update-function-code \
+  --function-name chickchat-api-AppFunction-12CWVAN7CQV1G \
+  --s3-bucket ${S3_BUCKET} \
+  --s3-key ${ARTIFACT_NAME} \
+  --publish

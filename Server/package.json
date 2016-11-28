@@ -30,6 +30,7 @@
     "json-loader": "^0.5.4",
     "jsrsasign": "^6.1.4",
     "lodash": "4.16.4",
+    "morgan": "^1.7.0",
     "node-uuid": "^1.4.7",
     "uuid": "2.0.3",
     "webpack": "^1.13.2",

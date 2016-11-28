@@ -24,6 +24,11 @@ Resources:
           Properties:
             Path: /{proxy+}
             Method: any
+  ApiGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      DefinitionUri: s3://chickchat-artifact/swagger.yaml
   Table:
     Type: AWS::DynamoDB::Table
     Properties:

@@ -6,6 +6,7 @@ import cors from 'cors'
 import express from 'express'
 import jwt from 'express-jwt'
 import {getAuth0Secret} from './helpers/kmsTools'
+import morgan from 'morgan'
 import uuid from 'node-uuid'
 import _ from 'lodash'
 import crypto from 'crypto'
@@ -24,11 +25,15 @@ const filterUser = (user) => {
   return copy
 }
 
+console.log('App initialized...')
+
 const configure = (app, auth0Secret) => {
+  console.log('Configuring express app...')
   app.use(cors())
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))
   app.use(awsServerlessExpressMiddleware.eventContext())
+  app.use(morgan('combined'))
 
   const router = express.Router()
 
@@ -74,11 +79,11 @@ const configure = (app, auth0Secret) => {
   })
 }
 
-
-getAuth0Secret().then((data) => {
-  configure(app, data)
-}).catch((err) => {
-  throw new Error(err)
+module.exports = new Promise((resolve, reject) => {
+  const p = getAuth0Secret().then((data) => {
+    configure(app, data)
+    resolve(app)
+  }).catch((err) => {
+    reject(err)
+  })
 })
-
-module.exports = app

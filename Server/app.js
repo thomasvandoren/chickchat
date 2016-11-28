@@ -6,8 +6,23 @@ import cors from 'cors'
 import express from 'express'
 import jwt from 'express-jwt'
 import {getAuth0Secret} from './helpers/kmsTools'
+import uuid from 'node-uuid'
+import _ from 'lodash'
+import crypto from 'crypto'
 
 const app = express()
+
+const filterUser = (user) => {
+  const copy = _.cloneDeep(user)
+
+  delete copy.exp;
+  delete copy.iat;
+
+  copy.userId = crypto.createHmac('sha256', copy.sub).digest('hex')
+  delete copy.sub
+
+  return copy
+}
 
 const configure = (app, auth0Secret) => {
   app.use(cors())
@@ -39,9 +54,15 @@ const configure = (app, auth0Secret) => {
   })
 
   router.post('/message', (req, res) => {
-    console.log(req.user)
+    const msg = {
+      messageId: uuid.v4(),
+      text: req.body.text,
+      data: req.body.data,
+      author: filterUser(req.user),
+      userPrivate: req.user,
+    }
 
-    res.status(404).send('not yet!')
+    res.json(msg)
   })
 
   app.use('/', router)

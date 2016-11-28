@@ -38,12 +38,14 @@ fi
 
 AWS="${aws_cli} --output json --region us-west-2"
 
-S3_BUCKET=chickchat-artifacts
+S3_BUCKET=chickchat-artifact
 artifact_cnt=$($AWS s3api list-buckets --query "Buckets[?Name == '$S3_BUCKET'].Name[] | length(@)")
 
 if [ $artifact_cnt = "0" ] ; then
   log_info "Creating s3 bucket named: ${S3_BUCKET}"
-  $AWS s3api create-bucket --bucket ${S3_BUCKET}
+  $AWS s3api create-bucket \
+    --bucket ${S3_BUCKET} \
+    --create-bucket-configuration 'LocationConstraint=us-west-2'
   $AWS s3api put-bucket-versioning \
     --bucket ${S3_BUCKET} \
     --versioning-configuration 'Status=Enabled'
@@ -52,3 +54,17 @@ fi
 S3_ARTIFACT=s3://${S3_BUCKET}/${ARTIFACT_NAME}
 $AWS s3 cp ${ARTIFACT} ${S3_ARTIFACT}
 log_info "Uploaded ${ARTIFACT_NAME} to ${S3_ARTIFACT}"
+
+STACK_NAME=chickchat-api
+log_info "Packaging cloud formation..."
+$AWS cloudformation package \
+  --template-file aws-sam.yaml \
+  --output-template-file rendered-aws-sam.yaml \
+  --s3-bucket ${S3_BUCKET} \
+  --kms-key-id ${KMS_KEY_ARN}
+log_info "Deploying cloudformation stack: ${STACK_FORMATION}"
+$AWS cloudformation deploy \
+  --template-file rendered-aws-sam.yaml \
+  --capabilities CAPABILITY_IAM \
+  --stack-name ${STACK_NAME}
+log_info "Deployed cloudformation stack: ${STACK_FORMATION}"

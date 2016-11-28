@@ -8,6 +8,7 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack",
+    "console": "babel-node",
     "deploy": "./scripts/deploy.bash",
     "package": "npm run build && zip -j api_backend.zip dist/*.js",
     "start": "babel-node local-server.js"
@@ -29,6 +30,7 @@
     "json-loader": "^0.5.4",
     "jsrsasign": "^6.1.4",
     "lodash": "4.16.4",
+    "node-uuid": "^1.4.7",
     "uuid": "2.0.3",
     "webpack": "^1.13.2",
     "xtend": "^4.0.1"

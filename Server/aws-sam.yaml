@@ -7,7 +7,8 @@ Resources:
     Properties:
       Handler: lambda.handler
       Runtime: nodejs4.3
-      CodeUri: s3://chickchat-artifacts/api_backend.zip
+      Role: arn:aws:iam::652859276071:role/api-role
+      CodeUri: s3://chickchat-artifact/api_backend.zip
       Policies: AmazonDynamoDBFullAccess
       Environment:
         Variables:
@@ -25,10 +26,14 @@ Resources:
             Method: any
   Table:
     Type: AWS::DynamoDB::Table
+    Properties:
       AttributeDefinitions:
         - AttributeName: messageId
           AttributeType: S
       KeySchema:
-        AttributeName: messageId
-        KeyType: HASH
+        - AttributeName: messageId
+          KeyType: HASH
       TableName: chickchat
+      ProvisionedThroughput:
+        ReadCapacityUnits: 20
+        WriteCapacityUnits: 5

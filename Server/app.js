@@ -62,12 +62,11 @@ function configure(app, auth0Secret) {
       TableName: 'chickchat',
       ConsistentRead: true,
     }).promise().then((data) => {
+      console.log('Found ' + data.Count + ' items in chickchat table')
       const items = data.Items.map(getResp)
-      console.log(items)
       items.sort((a, b) => {
         return a.timestampUtc - b.timestampUtc
       })
-      console.log(items)
       res.json({
         messages: items,
         count: items.length,

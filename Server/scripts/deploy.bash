@@ -55,29 +55,46 @@ S3_ARTIFACT=s3://${S3_BUCKET}/${ARTIFACT_NAME}
 $AWS s3 cp ${ARTIFACT} ${S3_ARTIFACT}
 log_info "Uploaded ${ARTIFACT_NAME} to ${S3_ARTIFACT}"
 
+LAMBDA_NAME=chickchat-api-AppFunction-1SPI4QOVYRX4P
+
+SWAGGER_TMPL=swagger.tmpl.yaml
 SWAGGER_NAME=swagger.yaml
 SWAGGER=${REPO_ROOT}/${SWAGGER_NAME}
+
+cat ${REPO_ROOT}/${SWAGGER_TMPL} \
+  | sed "s/@@LAMBDA_NAME@@/${LAMBDA_NAME}/g" \
+  > ${SWAGGER}
+
 S3_SWAGGER=s3://${S3_BUCKET}/${SWAGGER_NAME}
 $AWS s3 cp ${SWAGGER} ${S3_SWAGGER}
 log_info "Uploaded ${SWAGGER_NAME} to ${S3_SWAGGER}"
 
 STACK_NAME=chickchat-api
-log_info "Packaging cloud formation..."
-$AWS cloudformation package \
-  --template-file aws-sam.yaml \
-  --output-template-file rendered-aws-sam.yaml \
-  --s3-bucket ${S3_BUCKET} \
-  --kms-key-id ${KMS_KEY_ARN}
-log_info "Deploying cloudformation stack: ${STACK_FORMATION}"
-$AWS cloudformation deploy \
-  --template-file rendered-aws-sam.yaml \
-  --capabilities CAPABILITY_IAM \
-  --stack-name ${STACK_NAME} \
-  || true
+$AWS s3 cp aws-sam.yaml s3://${S3_BUCKET}/aws-sam.yaml
+$AWS s3api put-object-acl \
+  --bucket ${S3_BUCKET} \
+  --key aws-sam.yaml \
+  --grant-read uri=http://acs.amazonaws.com/groups/global/AllUsers
+
+# stack_exists=$($AWS --query "StackSummaries[?StackName == 'chickchat-api'] | @[?StackStatus == 'CREATE_COMPLETE'].StackId | length(@)" cloudformation list-stacks)
+# if [ "${stack_exists}" = "0" ] ; then
+#   log_info "Deploying cloudformation stack: ${STACK_FORMATION}"
+#   $AWS cloudformation deploy \
+#     --template-file rendered-aws-sam.yaml \
+#     --capabilities CAPABILITY_IAM \
+#     --stack-name ${STACK_NAME} \
+#     || true
+# fi
+
+# log_info "Updating stack..."
+# $AWS cloudformation update-stack \
+#   --stack-name ${STACK_NAME} \
+#   --template-url https://s3-us-west-2.amazonaws.com/${S3_BUCKET}/aws-sam.yaml
+
 log_info "Deployed cloudformation stack: ${STACK_FORMATION}"
 
 $AWS lambda update-function-code \
-  --function-name chickchat-api-AppFunction-12CWVAN7CQV1G \
+  --function-name ${LAMBDA_NAME} \
   --s3-bucket ${S3_BUCKET} \
   --s3-key ${ARTIFACT_NAME} \
   --publish

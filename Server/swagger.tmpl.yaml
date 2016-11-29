@@ -19,10 +19,11 @@ paths:
         responses:
           default:
             statusCode: 200
-        uri: arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:652859276071:function:chickchat-api-AppFunction-12CWVAN7CQV1G/invocations
         passthroughBehavior: when_no_match
+        type: aws
+        credentials: arn:aws:iam::652859276071:role/api-role
+        uri: arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:652859276071:function:@@LAMBDA_NAME@@/invocations
         httpMethod: POST
-        type: aws_proxy
     options:
       consumes:
       - application/json
@@ -63,9 +64,10 @@ paths:
         type: string
       responses: {}
       x-amazon-apigateway-integration:
-        uri: arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:652859276071:function:chickchat-api-AppFunction-12CWVAN7CQV1G/invocations
+        type: lambda
+        credentials: arn:aws:iam::652859276071:role/api-role
+        uri: arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:652859276071:function:@@LAMBDA_NAME@@/invocations
         httpMethod: POST
-        type: aws_proxy
     options:
       consumes:
       - application/json

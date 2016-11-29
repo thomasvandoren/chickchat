@@ -1,5 +1,6 @@
 'use strict'
 
+import aws from 'aws-sdk'
 import awsServerlessExpressMiddleware from 'aws-serverless-express/middleware'
 import bodyParser from 'body-parser'
 import cors from 'cors'
@@ -12,8 +13,14 @@ import _ from 'lodash'
 import crypto from 'crypto'
 
 const app = express()
+const dynamodb = new aws.DynamoDB({
+  region: 'us-west-2'
+})
+const docClient = new aws.DynamoDB.DocumentClient({
+  service: dynamodb
+})
 
-const filterUser = (user) => {
+function filterUser(user) {
   const copy = _.cloneDeep(user)
 
   delete copy.exp;
@@ -25,9 +32,15 @@ const filterUser = (user) => {
   return copy
 }
 
+function getResp(msg) {
+  const resp = _.cloneDeep(msg)
+  delete resp.userPrivate
+  return resp
+}
+
 console.log('App initialized...')
 
-const configure = (app, auth0Secret) => {
+function configure(app, auth0Secret) {
   console.log('Configuring express app...')
   app.use(cors())
   app.use(bodyParser.json())
@@ -45,29 +58,51 @@ const configure = (app, auth0Secret) => {
   }))
 
   router.get('/', (req, res) => {
-    console.log(req.user)
-
     res.json({ msg: 'stuff!'})
   })
 
   router.get('/message', (req, res) => {
-    console.log(req.user)
-
-    res.json({
-      messages: []
+    docClient.scan({
+      TableName: 'chickchat',
+      ConsistentRead: true,
+    }).promise().then((data) => {
+      const items = data.Items.map(getResp)
+      console.log(items)
+      items.sort((a, b) => {
+        return a.timestampUtc - b.timestampUtc
+      })
+      console.log(items)
+      res.json({
+        messages: items,
+        count: items.length,
+      })
+    }).catch((err) => {
+      console.log(err)
+      res.status(500).json({ message: err.message })
     })
   })
 
   router.post('/message', (req, res) => {
     const msg = {
       messageId: uuid.v4(),
-      text: req.body.text,
-      data: req.body.data,
+      text: req.body.text || null,
+      data: req.body.data || null,
       author: filterUser(req.user),
       userPrivate: req.user,
+      timestampUtc: Date.now(),
     }
 
-    res.json(msg)
+    docClient.put({
+      TableName: 'chickchat',
+      Item: msg,
+    }).promise().then(() => {
+      const resp = getResp(msg)
+      res.json(resp)
+    }).catch((err) => {
+      console.log('Failed to put item in DynamoDB.')
+      console.log(err)
+      res.status(500).json({ msg: err.message })
+    })
   })
 
   app.use('/', router)

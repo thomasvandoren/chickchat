@@ -1,7 +1,7 @@
 ---
 swagger: 2.0
 info:
-  title: ChickChat API
+  title: chickchat-api
 basePath: /prod
 schemes:
 - https

@@ -1,3 +1,4 @@
 /api_backend.zip
 /rendered-aws-sam.yaml
 /swagger.yaml
+.envrc

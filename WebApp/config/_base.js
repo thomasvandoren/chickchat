@@ -58,7 +58,7 @@ const config = {
 config.globals = {
     'process.env': {
         'NODE_ENV': JSON.stringify(config.env),
-        'API_URL': JSON.stringify('https://chick.chat')
+        'API_URL': JSON.stringify(process.env.API_URL) || JSON.stringify('https://chick.chat')
     },
     '__DEV__': config.env === 'development',
     '__HMR__': config.env === 'development' && argv.hmr !== false

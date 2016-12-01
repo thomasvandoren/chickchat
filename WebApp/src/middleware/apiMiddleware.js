@@ -65,9 +65,7 @@ export function createApiMiddleware(fetchJSON, normalize) {
                 return response
             })
             .catch((error) => {
-                if (!__TEST__) {
-                    console.error(error)
-                }
+                console.error(error)
 
                 if (typeof action.failure === 'function') {
                     action.failure(dispatch, getState, error)

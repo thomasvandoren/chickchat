@@ -7,6 +7,7 @@ const POLL_INTERVAL = 1000
 
 export class Fetch extends React.Component {
     _onChange = () => {
+        this.props.update()
     }
 
     _poll = () => {
@@ -34,6 +35,10 @@ export class Fetch extends React.Component {
     render() {
         return null;
     }
+}
+
+Fetch.propTypes = {
+    update: PropTypes.func
 }
 
 export default connect(undefined, {

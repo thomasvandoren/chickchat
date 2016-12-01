@@ -40,7 +40,7 @@ export default connect(undefined, {
     update: () => {
         return {
             type: 'UPDATE_CHAT',
-            apiEndpoint: 'chatFetch'
+            apiEndpoint: 'chatGET'
         }
     }
 })(Fetch)

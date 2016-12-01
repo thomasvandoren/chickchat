@@ -12,7 +12,7 @@ export class ChatPage extends React.Component {
     render() {
         return (
             <div style={{height: "100%", display: "flex", flexDirection: "column"}}>
-                <AppBar title="ChickChat" showMenuIconButton={false}/>
+                <AppBar title="ChickChat" showMenuIconButton={false} />
                 <Chat />
                 <Fetch />
             </div>

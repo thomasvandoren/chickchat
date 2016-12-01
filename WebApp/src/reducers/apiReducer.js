@@ -38,13 +38,17 @@ const initialState = {
     endpoints: {
         chatGET: {
             method: 'get',
-            url: `${config.apiUrl}/book`
+            url: `${config.apiUrl}/message`
+        },
+        chatPOST: {
+            method: 'post',
+            url: `${config.apiUrl}/message`
         }
     }
 };
 
 export default createReducer(initialState, {
-    DEAD(state) {
+    DEAD (state) {
         return state
     }
 })

@@ -37,10 +37,8 @@ export class Fetch extends React.Component {
 }
 
 export default connect(undefined, {
-    update: () => {
-        return {
-            type: 'UPDATE_CHAT',
-            apiEndpoint: 'chatGET'
-        }
-    }
+    update: () => ({
+        type: 'UPDATE_CHAT',
+        apiEndpoint: 'chatGET'
+    })
 })(Fetch)

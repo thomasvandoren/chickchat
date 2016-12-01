@@ -9,7 +9,7 @@ export class Chat extends React.Component {
                     {this.props.messages.map(renderMessage)}
                 </ul>
 
-                /** Exercise 2: Add a ReplyBox component **/
+                {/* Exercise 2: Add a ReplyBox component */}
 
             </div>
         )
@@ -20,7 +20,7 @@ function renderMessage (message) {
     return (
         <li key={message.id}>
 
-            /** Exercise 3: Add message author **/
+            {/* Exercise 3: Add message author */}
 
             {message.text}
         </li>

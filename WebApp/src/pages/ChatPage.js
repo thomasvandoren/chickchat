@@ -1,6 +1,8 @@
 import React, {PropTypes} from "react"
 import {connect} from "react-redux"
 import Fetch from "../components/Fetch"
+import Chat from "../components/Chat"
+import {AppBar} from "material-ui"
 
 export class ChatPage extends React.Component {
     componentWillMount() {
@@ -9,8 +11,9 @@ export class ChatPage extends React.Component {
 
     render() {
         return (
-            <div>
-                <h1>Hello World</h1>
+            <div style={{height: "100%", display: "flex", flexDirection: "column"}}>
+                <AppBar title="ChickChat" showMenuIconButton={false}/>
+                <Chat />
                 <Fetch />
             </div>
         )

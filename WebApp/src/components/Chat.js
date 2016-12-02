@@ -18,7 +18,7 @@ export class Chat extends React.Component {
 
 function renderMessage (message) {
     return (
-        <li key={message.id}>
+        <li key={message.messageId}>
 
             {/* Exercise 3: Add message author */}
 

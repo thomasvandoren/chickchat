@@ -1,6 +1,16 @@
-const MAX_IMAGE_SIZE_BYTES = 16 * 1024 * 1024
+const MAX_IMAGE_SIZE_BYTES = 100 * 1024
 
-export default function attachImage (this, e) {
+/**
+ * To use:
+ * import attachImage from "src/util/attachImage"
+ *
+ * And add the following to the component class:
+ * onAttachImage = attachImage.bind(this)
+ *
+ * Now you can render an HTML5 file input, e.g.:
+ * <input type="file" onChange={this.onAttachImage} />
+ */
+export default function attachImage (e) {
   e.preventDefault()
   const file = e.target.files[0]
   const fr = new FileReader()

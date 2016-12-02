@@ -5,7 +5,7 @@ export class Chat extends React.Component {
     render () {
         return (
             <div style={rootStyle}>
-                <ul>
+                <ul style={ulStyle}>
                     {this.props.messages.map(renderMessage)}
                 </ul>
 
@@ -25,6 +25,13 @@ function renderMessage (message) {
             {message.text}
         </li>
     )
+}
+
+const ulStyle = {
+    overflowY: "scroll",
+
+    /* Exercise 4: Add your own styles */
+
 }
 
 const rootStyle = {

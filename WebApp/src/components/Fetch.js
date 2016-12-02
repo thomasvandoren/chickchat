@@ -43,7 +43,7 @@ Fetch.propTypes = {
 
 export default connect(undefined, {
     update: () => ({
-        type: 'UPDATE_CHAT',
+        type: 'GET_MESSAGES',
         apiEndpoint: 'chatGET'
     })
 })(Fetch)

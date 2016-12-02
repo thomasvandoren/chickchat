@@ -7,12 +7,12 @@ export class ReplyBox extends React.Component {
     }
 
     updateText = (e) => {
-        this.setState(text: e.target.value)
+        this.setState({text: e.target.value})
     }
 
     sendReply = () => {
         this.props.replyText(this.state.text)
-        this.setState(text: "")
+        this.setState({text: ""})
     }
 
     render () {

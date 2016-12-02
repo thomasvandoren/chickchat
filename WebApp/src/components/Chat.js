@@ -22,7 +22,7 @@ function renderMessage (message) {
 
             {/* Exercise 3: Add message author */}
 
-            {message.text}
+            {getMessageBody(message)}
         </li>
     )
 }
@@ -34,11 +34,25 @@ const ulStyle = {
 
 }
 
+const imageStyle = {
+    maxWidth: "100px",
+    maxHeight: "100px",
+    objectFit: "contain"
+}
+
 const rootStyle = {
     display: "flex",
     flexDirection: "column",
     justifyContent: "flex-end",
     height: "100%"
+}
+
+function getMessageBody (message) {
+    if (message.data) {
+        return <img src={message.data} style={imageStyle} />
+    } else {
+        return message.text
+    }
 }
 
 Chat.propTypes = {

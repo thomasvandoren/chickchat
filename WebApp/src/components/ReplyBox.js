@@ -27,6 +27,7 @@ export class ReplyBox extends React.Component {
 }
 
 ReplyBox.propTypes = {
+    replyImage: PropTypes.func,
     replyText: PropTypes.func
 }
 
@@ -35,5 +36,10 @@ export default connect(undefined, {
         type: "REPLY",
         apiEndpoint: "chatPOST",
         payload: {text}
+    }),
+    replyImage: (data) => ({
+        type: "REPLY",
+        apiEndpoint: "chatPOST",
+        payload: {data}
     })
 })(ReplyBox)

@@ -50,18 +50,18 @@ function configure(app, auth0Secret) {
 
   const router = express.Router()
 
-  router.all('*', jwt({
+  const authenticate = jwt({
     secret: new Buffer(auth0Secret, 'base64'),
     issuer: 'https://chickchat.auth0.com/',
     audience: '5mEPvtSaOrH23TKWEebEBZZkHcE4N072',
     credentialsRequired: true,
-  }))
+  })
 
-  router.get('', (req, res) => {
+  router.get('/', (req, res) => {
     res.json({ healthy: true })
   })
 
-  router.get('/message', (req, res) => {
+  router.get('/message', authenticate, (req, res) => {
     docClient.scan({
       TableName: 'chickchat',
       ConsistentRead: true,
@@ -81,7 +81,7 @@ function configure(app, auth0Secret) {
     })
   })
 
-  router.post('/message', (req, res) => {
+  router.post('/message', authenticate, (req, res) => {
     const msg = {
       messageId: uuid.v4(),
       text: req.body.text || null,

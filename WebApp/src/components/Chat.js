@@ -1,3 +1,4 @@
+import moment from "moment"
 import React, {PropTypes} from "react"
 import {connect} from "react-redux"
 
@@ -45,6 +46,10 @@ const rootStyle = {
     flexDirection: "column",
     justifyContent: "flex-end",
     height: "100%"
+}
+
+function getMessageDate (message) {
+    return moment(message.timestampUtc).format("dddd, h:mm A")
 }
 
 function getMessageBody (message) {

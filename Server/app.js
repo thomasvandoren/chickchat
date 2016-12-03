@@ -57,6 +57,10 @@ function configure(app, auth0Secret) {
     credentialsRequired: true,
   }))
 
+  router.get('', (req, res) => {
+    res.json({ healthy: true })
+  })
+
   router.get('/message', (req, res) => {
     docClient.scan({
       TableName: 'chickchat',

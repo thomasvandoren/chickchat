@@ -7,12 +7,17 @@ const POLL_INTERVAL = 1000
 
 export class Fetch extends React.Component {
     _onChange = () => {
-        this.props.update()
+        return this.props.update()
     }
 
     _poll = () => {
-        this._onChange()
-        this.timer = setTimeout(this._poll, POLL_INTERVAL)
+        this._onChange().then(
+          () => {
+            this.timer = setTimeout(this._poll, POLL_INTERVAL)
+          }
+        ).catch(() => {
+          this.timer = setTimeout(this._poll, POLL_INTERVAL)
+        })
     }
 
     componentDidMount() {

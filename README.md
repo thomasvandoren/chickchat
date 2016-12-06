@@ -1,5 +1,7 @@
 # ChickChat
-ChickChat web chat application for December 2016 ChickTech highschool workshop.
+
+ChickChat web chat application for December 2016
+[ChickTech: Seattle](http://seattle.chicktech.org/) highschool workshop.
 
 ## Setup
 

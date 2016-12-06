@@ -1,9 +1,13 @@
 import React, {PropTypes} from "react"
 import {connect} from "react-redux"
+import attachImage from "src/util/attachImage"
 
 export class ReplyBox extends React.Component {
+    onAttachImage = attachImage.bind(this)
+
     state = {
-        text: ""
+        text: "",
+        data: "",
     }
 
     updateText = (e) => {
@@ -15,14 +19,28 @@ export class ReplyBox extends React.Component {
         this.setState({text: ""})
     }
 
+    sendImage = () => {
+      this.props.replyImage(this.state.data)
+      this.setState({data: ""})
+    }
+
+    handleKey = (e) => {
+      if (e.key === 'Enter') {
+        this.sendReply()
+      }
+    }
+
     render () {
         return (
             <div>
 
                 {/* Exercise 2: Render a text input and a button */}
 
-                <input value={this.state.text} onChange={this.updateText} />
+                <input value={this.state.text} onChange={this.updateText} onKeyPress={this.handleKey(e)} />
                 <button onClick={this.sendReply}>Send</button>
+
+                <input type="file" onChange={this.onAttachImage} />
+                <button onClick={this.sendImage}>Upload!</button>
             </div>
         )
     }

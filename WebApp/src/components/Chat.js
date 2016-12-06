@@ -40,9 +40,10 @@ function renderMessage (message) {
             <hr/>
 
             <div style={userStyle}>
-            <img src={message.author.picture} style={imageStyle} />
+            <img src={message.author.picture} style={avatarStyle} />
             <br/>
             {message.author.name}
+            <br/>
             {getMessageDate(message)}
             </div>
             <div style={contentStyle}>
@@ -72,9 +73,16 @@ const ulStyle = {
 }
 
 const imageStyle = {
+    maxWidth: "300px",
+    maxHeight: "300px",
+    objectFit: "contain",
+}
+
+const avatarStyle = {
     maxWidth: "100px",
     maxHeight: "100px",
-    objectFit: "contain"
+    objectFit: "contain",
+    borderRadius: "50%",
 }
 
 const rootStyle = {

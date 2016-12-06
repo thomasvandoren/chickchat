@@ -7,7 +7,7 @@ export class ReplyBox extends React.Component {
 
     state = {
         text: "",
-        data: "",
+        data: ""
     }
 
     updateText = (e) => {
@@ -24,19 +24,19 @@ export class ReplyBox extends React.Component {
       this.setState({data: ""})
     }
 
-    handleKey = (e) => {
-      if (e.key === 'Enter') {
-        this.sendReply()
-      }
-    }
-
     render () {
         return (
             <div>
 
                 {/* Exercise 2: Render a text input and a button */}
 
-                <input value={this.state.text} onChange={this.updateText} onKeyPress={this.handleKey(e)} />
+                <input value={this.state.text} onChange={this.updateText}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      this.sendReply()
+                    }
+                  }}
+                />
                 <button onClick={this.sendReply}>Send</button>
 
                 <input type="file" onChange={this.onAttachImage} />

@@ -11,13 +11,18 @@ import morgan from 'morgan'
 import uuid from 'node-uuid'
 import _ from 'lodash'
 import crypto from 'crypto'
+import dataUri from 'strong-data-uri'
 
 const app = express()
+const awsRegion = 'us-west-2';
 const dynamodb = new aws.DynamoDB({
-  region: 'us-west-2'
+  region: awsRegion
 })
 const docClient = new aws.DynamoDB.DocumentClient({
   service: dynamodb
+})
+const s3Client = new aws.S3({
+  region: awsRegion
 })
 
 function filterUser(user) {
@@ -43,7 +48,9 @@ console.log('App initialized...')
 function configure(app, auth0Secret) {
   console.log('Configuring express app...')
   app.use(cors())
-  app.use(bodyParser.json())
+  app.use(bodyParser.json({
+    limit: '25MB',
+  }))
   app.use(bodyParser.urlencoded({ extended: true }))
   app.use(awsServerlessExpressMiddleware.eventContext())
   app.use(morgan('combined'))
@@ -90,18 +97,57 @@ function configure(app, auth0Secret) {
       userPrivate: req.user,
       timestampUtc: Date.now(),
     }
+    const putToDynamo = (msg) => {
+      console.log('Putting document in dynamo!')
+      docClient.put({
+        TableName: 'chickchat',
+        Item: msg,
+      }).promise().then(() => {
+        const resp = getResp(msg)
+        res.json(resp)
+      }).catch((err) => {
+        console.log('Failed to put item in DynamoDB.')
+        console.log(err)
+        res.status(500).json({ msg: err.message })
+      })
+    }
 
-    docClient.put({
-      TableName: 'chickchat',
-      Item: msg,
-    }).promise().then(() => {
-      const resp = getResp(msg)
-      res.json(resp)
-    }).catch((err) => {
-      console.log('Failed to put item in DynamoDB.')
-      console.log(err)
-      res.status(500).json({ msg: err.message })
-    })
+    // Upload data blob to S3, then store URL for object as data.
+    if (msg.data === null) {
+      putToDynamo(msg)
+    } else {
+      console.log('Parsing data uri...')
+      const dataParsed = dataUri.decode(msg.data)
+      const fileExt = dataParsed.mimetype.split('/')[1]
+      const dataKey = uuid.v4() + '.' + fileExt
+      const bucketName = 'chickchat-data'
+      const dataBody = Buffer.from(dataParsed.buffer, 'base64')
+
+      console.log('Uploading key to s3: ' + dataKey)
+      s3Client.putObject({
+        Bucket: bucketName,
+        Key: dataKey,
+        Body: dataBody,
+        ContentEncoding: 'base64',
+        ContentType: dataParsed.mimetype,
+      }).promise().then((data) => {
+        console.log('Setting acl on key: ' + dataKey)
+        return s3Client.putObjectAcl({
+          Bucket: bucketName,
+          Key: dataKey,
+          ACL: 'public-read',
+        }).promise()
+      }).then((data) => {
+        const dataNewLoc = 'https://s3-' + awsRegion + '.amazonaws.com/' + bucketName + '/' + dataKey
+        console.log('Successfully upload object to s3: ' + dataNewLoc)
+        const updatedMsg = Object.assign({}, msg, {data: dataNewLoc})
+        putToDynamo(updatedMsg)
+      }).catch((err) => {
+        console.log('Failed to upload image to S3!')
+        console.log(err);
+        res.status(500).json({ msg: err.message })
+      })
+    }
   })
 
   app.use('/', router)

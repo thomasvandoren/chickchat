@@ -14,7 +14,9 @@ ChickChat web chat application for December 2016
 
 ### Setup Cloud9 editor
 
-[Cloud9][c9-home] is a code editor (like Atom from class!) that works in your browser!
+[Cloud9][c9] is a code editor (like Atom from class!) that works in your browser!
+
+[c9]: https://c9.io
 
 You should have an invite in your personal email to join the ChickTech team on
 Cloud9. If you do not have an invite, please contact Thomas at

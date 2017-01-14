@@ -14,26 +14,29 @@ ChickChat web chat application for December 2016
 
 ### Setup Cloud9 editor
 
-Cloud9 is a code editor (like Atom from class!) that works in your browser!
+[Cloud9][c9] is a code editor (like Atom from class!) that works in your browser!
 
-* Open a new browser tab and go to: https://c9.io/
+[c9]: https://c9.io
 
-![c9-home](img/c9-home.png)
+You should have an invite in your personal email to join the ChickTech team on
+Cloud9. If you do not have an invite, please contact Thomas at
+thomas.vandoren@chicktech.org.
 
-* Click the Github logo in the upper-right corner. You will have to sign into
-  your Github account, and then "Authorize application". This will create a new
-  Cloud9 account for you.
+* Open the link in the email in a Chrome browser.
 
-* Select "Create new Cloud9 account"
+![c9-invite](img/c9-invite.png)
 
-![c9-create-acct](img/c9-create-acct.png)
+* Select "Create new account", and fill out the form on the next few pages.
 
-**FIXME:** We're working on setting up an edu org, so the CC number won't be necessary. (thomasvandoren, 2016-12-06)
+* Once you have registered for an account, you will see the "Welcome to Cloud9
+  Teams" screen. Select "Join team"!
 
-* Fill out the form. You will need to enter a credit card during sign up. It
-  won't charge you.
+![c9-join-team](img/c9-join-team.png)
 
-* When you have logged in, you should see this screen:
+* You will receive an email asking to reset your password.. Open the email, and
+  follow the link to set a password.
+
+* Once you are signed in, you will see the Cloud9 dashboard.
 
 ![c9-home](img/c9-home.png)
 
@@ -101,7 +104,7 @@ After command finishes, you should see something like this:
 
 ![c9-tab-run](img/c9-tab-run.png)
 
-* For example, my url is: https://chickchat-thomasvandorencttest.c9users.io/
+* For example, my url is: https://chickchat-thomasvandorenchicktech.c9users.io/
 
 ![c9-run](img/c9-run.png)
 
